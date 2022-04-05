@@ -1,4 +1,6 @@
 
+
+
 class LinkedList
 
     include Enumerable
@@ -11,30 +13,26 @@ class LinkedList
     end
 
     def prepend(value)
+        node = Node.new(value)
+
         if @head.nil?
-            @head = Node.new(value)
-            @tail = Node.new(value)
-        else
-            new_head = Node.new(value)
-            new_head.next_node = @head
-            @head = new_head
+            @head = @tail = node
+        else            
+            node.next_node = @head
+            @head = node
         end
     end
 
     def append(value)
-        puts "start appending"
-        if @head.nil?
-            @head = Node.new(value)
-            @tail = Node.new(value)
-        else
-            new_tail = Node.new(value)            
-            @tail.next_node = new_tail
-            puts "Added #{@tail.next_node.value} to the previous tail #{@tail}"           
-            new_tail.next_node = nil            
-            @tail = new_tail
-            puts "New tail is #{@tail} followed by #{@tail.next_node.nil?}"
+        node = Node.new(value)
+
+        if @head.nil?            
+            @head = @tail = node
+        else  
+            @tail.next_node = node                                
+            @tail = node      
         end
-        puts "end appending"
+        
     end
 
     def each
@@ -98,6 +96,7 @@ class LinkedList
 
     def pop
         if @head.nil?
+            puts "List is already empty"
             nil
         elsif self.size == 1
             @head = nil
@@ -114,6 +113,43 @@ class LinkedList
         end
     end
 
+    def contains(value)
+        contains = false
+
+        if @head.nil?
+            contains
+        else
+            node = @head
+            while node
+                if node.value == value
+                    return contains = true
+                end
+                node = node.next_node
+            end
+        contains
+        end
+    end
+
+    def find(value)
+        index = nil
+
+        if @head.nil?
+            index
+        else
+            index = 0
+            node = @head
+            
+            while node
+                if node.value == value
+                   return index
+                end                
+                node = node.next_node
+                index += 1
+            end
+        end
+
+    end
+
 end
 
 class Node
@@ -127,18 +163,20 @@ class Node
     def to_s
         @value
     end
+
+    def next_node=(node)
+        @next_node = node
+    end
 end
 
 
 list = LinkedList.new
-list.prepend('new first')
-list.prepend('last')
-list.prepend('A')
-list.append('X')
+
+list.append('old first')
+list.append('new first')
+
 puts list
-puts list.size
-#list.pop
-#list.pop
-#list.pop
-#puts list
+
+puts list.find(1)
+puts list.find('new first')
 
