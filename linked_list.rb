@@ -150,6 +150,64 @@ class LinkedList
 
     end
 
+    def insert_at(value, index)
+        node = Node.new(value)
+
+        if index >= self.size
+            puts "Index out of bounds"
+            return
+        end
+
+        if @head.nil?
+            @head = @tail = node
+
+        elsif index == 0
+            self.prepend(value)
+        else
+            curr_index = 0
+            current_node = @head
+            next_node = @head.next_node
+
+            while curr_index != index - 1
+                curr_index += 1
+                current_node = next_node
+                next_node = next_node.next_node
+            end
+            
+            node.next_node = next_node
+            current_node.next_node = node
+            
+        end
+    end
+
+    def remove_at(index)
+        if index >= self.size
+            puts "Index out of bounds"
+            return
+        end
+
+        if index == 0 && self.size == 1
+            self.pop
+            return
+        elsif index == 0
+            @head = @head.next_node
+            return
+        end
+
+        curr_index = 0
+        current_node = @head
+        next_node = @head.next_node
+
+        while curr_index != index - 1
+            current_node = next_node
+            next_node = next_node.next_node
+            curr_index += 1
+        end
+
+        current_node.next_node = next_node.next_node
+
+    end
+
 end
 
 class Node
@@ -170,13 +228,6 @@ class Node
 end
 
 
-list = LinkedList.new
 
-list.append('old first')
-list.append('new first')
 
-puts list
-
-puts list.find(1)
-puts list.find('new first')
 
